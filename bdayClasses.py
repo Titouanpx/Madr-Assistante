@@ -18,7 +18,6 @@ def sql_date_to_french_date(sql_date):
 
 def addmessage_to_date(message):
     date_obtained = message.content
-    global date_split_added
     date_split_added = date_obtained.split()
     date = french_date_to_sql_date(date_split_added[1])
     return date
