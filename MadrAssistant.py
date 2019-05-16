@@ -30,10 +30,10 @@ creator = "Madra#0779"
 async def on_ready():  # method expected by client. This runs once when connected
     print(f'We have logged in as {client.user}')  # notification of login.
 
-    if datetime.today().strftime('%H:%M') == '15:20':
-        print("hello")
-        channel = client.get_channel(353882527657885699)
-        await channel.send('happy bday')
+    #if datetime.today().strftime('%H:%M') == '15:20':
+    #    print("hello")
+    #    channel = client.get_channel(353882527657885699)
+    #    await channel.send('happy bday')
 
     # today = datetime.today().strftime('%m-%d')
     # print(today)
