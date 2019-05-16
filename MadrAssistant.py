@@ -14,7 +14,7 @@ conn = sqlite3.connect('my_database.db')
 c = conn.cursor()
 
 # Create table
-c.execute('''CREATE TABLE IF NOT EXISTS bday(id INT, name TEXT, day INT, month INT, year INT)''')
+c.execute('''CREATE TABLE IF NOT EXISTS bday(id INT UNIQUE, name TEXT, day INT, month INT, year INT)''')
 print("Table created or updated")
 
 # Save (commit) the changes
@@ -45,32 +45,37 @@ async def on_message(message):  # event that happens per any message.
 
     if message.content.startswith("$new"):
         log(message)
-        date_obtained = message.content
-        date_split_added = date_obtained.split()
-        date_split = date_split_added[1]
-        date_split2 = date_split.split('/')
-        day = date_split2[0]
-        month = date_split2[1]
-        year = date_split2[2]
-
-        # Insert a row of data
-        c.execute("INSERT INTO bday VALUES (?, ?, ?, ?, ?)", (pseudo_id, pseudo_name, day, month, year))
-        await message.channel.send('Votre pseudo : ' + pseudo_name + ' et votre anniversaire : '
-                                   + sql_date_to_french_date(addmessage_to_date(message)) + ' ont bien été stockés.')
-        conn.commit()
+        date = message_to_date(message)
+        day = date[0]
+        month = date[1]
+        year = date[2]
+        try:
+            # Insert a row of data
+            c.execute("INSERT INTO bday VALUES (?, ?, ?, ?, ?)", (pseudo_id, pseudo_name, day, month, year))
+            await message.channel.send('Votre pseudo : ' + pseudo_name + ' et votre anniversaire : '
+                                       + day + "/" + month + "/" + year + ' ont bien été stockés.')
+            conn.commit()
+        except Exception:
+            await message.channel.send('Vous avez déjà une date dans la liste, '
+                                       'enlevez la avant d\'en ajouter une nouvelle')
 
     if message.content == "$list":
         log(message)
         await message.channel.send("Attention, cela peut prendre un peu de temps")
-        for row in c.execute('SELECT name, day, month FROM bday ORDER BY month, day, name'):
+        for row in c.execute('SELECT name, day, month, year FROM bday ORDER BY month, day, name'):
             await message.channel.send(row)
         await message.channel.send("Et voila :smile:")
 
     if message.content.startswith("$remove"):
         log(message)
-        c.execute("DELETE FROM bday WHERE date = ?", (addmessage_to_date(message),))
+        date = message_to_date(message)
+        day = date[0]
+        month = date[1]
+        year = date[2]
+
+        c.execute("DELETE FROM bday WHERE day = " + day + " AND month = " + month + " AND year = " + year)
         conn.commit()
-        await message.channel.send('Votre anniversaire du ' + sql_date_to_french_date(removemessage_to_date(message))
+        await message.channel.send('Votre anniversaire du ' + day + "/" + month + "/" + year
                                    + ' a bien été supprimé')
 
     if message.content == "$clear" and str(message.author) == creator:
