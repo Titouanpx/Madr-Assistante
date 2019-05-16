@@ -30,41 +30,15 @@ creator = "Madra#0779"
 async def on_ready():  # method expected by client. This runs once when connected
     print(f'We have logged in as {client.user}')  # notification of login.
 
-    #if datetime.today().strftime('%H:%M') == '15:20':
-    #    print("hello")
-    #    channel = client.get_channel(353882527657885699)
-    #    await channel.send('happy bday')
-
-    # today = datetime.today().strftime('%m-%d')
-    # print(today)
-    # if (today == c.execute('SELECT date FROM bday WHERE date =' + today)):
-    #     channel = client.get_channel(353882527657885699)
-    #     await channel.send('happy bday')
-
-
-# @client.event
-# async def display_date():
-#     loop = asyncio.get_running_loop()
-#     end_time = loop.time() + 86400
-#     while True:
-#         print(datetime.now())
-#         if (loop.time() + 1.0) >= end_time:
-#             break
-#        await asyncio.sleep(1)
-#        channel = client.get_channel(12324234183172)
-#        await channel.send('happy bday')
-#
-# asyncio.run(display_date())
-
 
 @client.event
 async def on_message(message):  # event that happens per any message.
     if str(message.author) == 'Madr\'Assistante#6999':
         log(message)
 
-    if str(message.author) == creator and message.content == "ping" in message.content.lower():
+    if str(message.author) == creator and message.content == "ping2" in message.content.lower():
         log(message)
-        await message.channel.send('pong')
+        await message.channel.send('pong2')
 
     pseudo_id = message.author.id
     pseudo_name = message.author.name
