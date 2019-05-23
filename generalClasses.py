@@ -21,7 +21,7 @@ def server_left(member):
                               'ammorack par un Tog II**'
     if y == 2:
         return '**Au revoir à ' + member.name + ' (<@' + str(member.id) + '>) qui part afin de devenir joueur ' \
-                            'professionnel de Tetris 99 Battle Royale**'
+                              'professionnel de Tetris 99 Battle Royale**'
 
 
 def code():
