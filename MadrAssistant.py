@@ -3,12 +3,10 @@ import sqlite3
 
 from bdayClasses import *
 from generalClasses import *
-from datetime import datetime
-import asyncio
 
 # print(discord.__version__)  # check to make sure at least once you're on the right version!
 token = open("token.txt", "r").read()  # Saving my token into a text file.
-client = discord.Client()  # starts the discord client.
+client = discord.Client()  # start the discord client.
 
 conn = sqlite3.connect('my_database.db')
 c = conn.cursor()
@@ -19,8 +17,6 @@ print("Table created or updated")
 
 # Save (commit) the changes
 conn.commit()
-# We can also close the connection if we are done with it.
-# Just be sure any changes have been committed or they will be lost.
 print("Result saved")
 
 creator = "Madra#0779"
@@ -49,15 +45,12 @@ async def on_message(message):  # event that happens per any message.
         day = date[0]
         month = date[1]
         year = date[2]
-        try:
-            # Insert a row of data
-            c.execute("INSERT INTO bday VALUES (?, ?, ?, ?, ?)", (pseudo_id, pseudo_name, day, month, year))
-            await message.channel.send('Votre pseudo : ' + pseudo_name + ' et votre anniversaire : '
+
+        # Insert a row of data
+        c.execute("INSERT INTO bday VALUES (?, ?, ?, ?, ?)", (pseudo_id, pseudo_name, day, month, year))
+        await message.channel.send('Votre pseudo : ' + pseudo_name + ' et votre anniversaire : '
                                        + day + "/" + month + "/" + year + ' ont bien été stockés.')
-            conn.commit()
-        except Exception:
-            await message.channel.send('Vous avez déjà une date dans la liste, '
-                                       'enlevez la avant d\'en ajouter une nouvelle')
+        conn.commit()
 
     if message.content == "$list":
         log(message)
@@ -80,8 +73,6 @@ async def on_message(message):  # event that happens per any message.
 
     if message.content == "$clear" and str(message.author) == creator:
         log(message)
-        # await message.channel.send('Est-tu sur de vouloir vider entierement la table? (y/n)')
-        # if message.content == "y" or message.content == "Y":
         c.execute("DELETE FROM bday")
         conn.commit()
         await message.channel.send('Table vidée')
