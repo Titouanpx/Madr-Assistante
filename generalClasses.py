@@ -15,13 +15,16 @@ def server_joined(member):
 
 
 def server_left(member):
-    y = randint(1, 2)
+    y = randint(1, 3)
     if y == 1:
         return '**Au revoir à ' + member.name + ' (<@' + str(member.id) + '>) qui a ragequit après s\'être fait ' \
                               'ammorack par un Tog II**'
     if y == 2:
         return '**Au revoir à ' + member.name + ' (<@' + str(member.id) + '>) qui part afin de devenir joueur ' \
                               'professionnel de Tetris 99 Battle Royale**'
+    if y == 3:
+        return '**Au revoir à ' + member.name + ' (<@' + str(member.id) + '>) qui ne reviendra pas, car il a jeté' \
+                              ' son pc par la fenètre après s\'etre fait one shot par l\'arty**'
 
 
 def code():
